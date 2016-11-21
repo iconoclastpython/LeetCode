@@ -334,4 +334,32 @@ public class Solution {
 }
 ----------------------------------------------------
 
+Swap Nodes in Pairs:
+public class Solution {
+    public ListNode swapPairs(ListNode head) 
+    {
+        if(head == null || head.next == null)
+            return head;
+            
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        for(ListNode cur = dummy; cur.next != null && 
+        	cur.next.next != null; cur = cur.next.next)
+        {
+            cur.next = swap(cur.next, cur.next.next);
+        }
+        
+        return dummy.next;
+    }
+    
+    public ListNode swap(ListNode first, ListNode second)
+    {
+        first.next = second.next;
+        second.next = first;
+        return second;
+    }
+}
+----------------------------------------------------
+
 
