@@ -96,4 +96,29 @@ public class Solution {
 }
 -------------------------------------------------
 
+Implement strStr():
+public class Solution {
+    public int strStr(String haystack, String needle) 
+    {
+        int index = 0;
+        int len1 = haystack.length();
+        int len2 = needle.length();
+
+        if(len1 < len2) return -1;
+        else if(len2 == 0) return 0;
+
+        while(index + len2 <= len1)
+        {
+            String cur = haystack.substring(index, index+len2);
+
+            if(cur.equals(needle))
+                return index;
+            index++;
+        }
+
+        return -1;
+    }
+}
+-------------------------------------------------
+
 
