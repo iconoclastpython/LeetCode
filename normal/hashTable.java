@@ -103,3 +103,126 @@ public class Solution {
     }
 }
 -------------------------------------------------
+
+Valid Sudoku:
+public boolean isValidSudoku(char[][] board) {
+    int[][] usedRow = new int[9][9];
+    int[][] usedCol = new int[9][9];
+    int[][] usedBlk = new int[9][9];
+
+    for(int row = 0; row < board.length; row++) {
+        for(int col = 0; col < board[0].length; col++) {
+            if(board[row][col] != '.') {
+                int num = board[row][col] - '0' - 1;
+                int blk = row/3*3 + col/3;
+                if(usedRow[row][num] != 0 || usedCol[col][num] != 0 || usedBlk[blk][num] != 0)
+                    return false;
+                usedRow[row][num] = usedCol[col][num] = usedBlk[blk][num] = 1;
+            }
+        }
+    }
+    return true;
+}
+-------------------------------------------------
+
+Happy Number:
+public class Solution {
+    private static int happyHelper(int n) {
+        int tmp, sum = 0;
+        while(n != 0) {
+            tmp = n % 10;
+            sum += tmp * tmp;
+            n /= 10;
+        }
+        return sum;
+    }
+    
+    public boolean isHappy(int n) {
+        int slow = n, fast = n;
+        while(slow != 1) {
+            slow = happyHelper(slow);
+            if(slow == 1) return true;
+            fast = happyHelper(happyHelper(fast));
+            if(fast == 1) return true;
+            if(slow == fast) return false;
+        }
+        return true;
+    }
+}
+-------------------------------------------------
+
+Isomorphic Strings:
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        if(s.length() != t.length()) return false;
+        int[] map = new int[512];
+        for(int i = 0; i < s.length(); i++) {
+            if(map[s.charAt(i)] != map[t.charAt(i) + 256])
+                return false;
+            map[s.charAt(i)] = map[t.charAt(i) + 256] = i+1;
+        }
+        return true;
+    }
+}
+
+-------------------------------------------------
+
+Two Sum:
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] res = new int[2];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int i = 0; i < nums.length; i++) {
+            if(map.containsKey(target-nums[i])) {
+                res[0] =  map.get(target-nums[i]);;
+                res[1] = i;
+                return res;
+            }
+            map.put(nums[i], i);
+        }
+        return res;
+    }
+}
+-------------------------------------------------
+
+Fraction to Recurring Decimal:
+public class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        // case 0
+        if(numerator == 0) return "0";
+        StringBuilder res = new StringBuilder();
+
+        // case minus
+        res.append((numerator > 0) ^ (denominator > 0) ? "-" : "");
+        long num = Math.abs((long)numerator);
+        long den = Math.abs((long)denominator);
+
+        // case int
+        res.append(num / den);
+        if(num % den == 0) return res.toString();
+
+        // case decimal
+        res.append(".");
+        num %= den;
+        Map<Long, Integer> restToPos = new HashMap<>();
+        restToPos.put(num, res.length());
+
+        while(num != 0) {
+            num *= 10;
+            res.append(num / den);
+            num %= den;
+
+            // case repeat
+            if(restToPos.containsKey(num)) {
+                int index = restToPos.get(num);
+                res.insert(index, "(");
+                res.append(")");
+                return res.toString();
+            }
+            else {
+                restToPos.put(num, res.length());
+            }
+        }
+        return res.toString();
+    }
+}
