@@ -31,3 +31,31 @@ public class Solution {
     }
 }
 ---------------------------------------------------------
+
+Binary Tree Level Order Traversal:
+
+ public static List<List<Integer>> levelOrderI(TreeNode root)
+    {
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while(!queue.isEmpty())
+        {
+            int level = queue.size();
+            List<Integer> curList = new ArrayList<>();
+
+            for(int i = 0; i < level; i++)
+            {
+                TreeNode curNode = queue.peek();
+                if(curNode.left != null) queue.add(curNode.left);
+                if(curNode.right != null) queue.add(curNode.right);
+                curList.add(queue.poll().val);
+            }
+            res.add(curList);
+            //res.add(0, curList); // for bottom up order traversal
+        }
+
+        return res;
+    }
+---------------------------------------------------------
