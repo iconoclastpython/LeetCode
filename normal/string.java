@@ -442,3 +442,221 @@ public class Solution {
     }
 }
 -------------------------------------------------
+
+Dec 14:
+Generate Parentheses:
+public class Solution {
+    public List<String> generateParenthesis(int n) 
+    {
+        List<String> res = new ArrayList<>();
+        backtracking(res, "", 0, 0, n);
+        return res;
+    }
+    
+    private void backtracking(List res, String s, int open, int close, int max)
+    {
+        if(open == close && s.length() == 2*max)
+        {
+            res.add(s);
+            return ;
+        }
+        
+        if(open < max)
+        {
+            backtracking(res, s + "(", open+1, close, max);
+        }
+
+        if(close < open)
+        {
+            backtracking(res, s + ")", open, close+1, max);
+        }
+    }
+}
+-------------------------------------------------
+
+Reverse Words in a String:
+public class Solution {
+    public String reverseWords(String s) 
+    {
+        String[] str = s.trim().split("\\s+");
+        String r = reverse(str);
+        return r;
+    }
+    
+    private String reverse(String[] str)
+    {
+        StringBuilder res = new StringBuilder();
+        
+        for(int i = str.length - 1; i >= 0; i--)
+        {
+            res.append(str[i] + " ");
+        }
+        
+        return res.toString().trim();
+    }
+}
+-------------------------------------------------
+
+Reverse word in string II (In Place)
+public class Solution {
+    public static void reverseWordII(char[] s)
+    {
+        reverseII(s, 0, s.length-1);
+        int start = 0;
+        int end = s.length-1;
+        for(int i = 0; i < s.length; i++) //reverse each word
+        {
+            if(s[i] == ' ')
+            {
+                reverseII(s, start, i-1);
+                start = i+1;
+            }
+        }
+        reverseII(s, start, end); //reverse the last word
+    }
+
+    public static void reverseII(char[] s, int start, int end)
+    {
+        while(start < end)
+        {
+            char temp = s[start];
+            s[start] = s[end];
+            s[end] = temp;
+            start++;
+            end--;
+        }
+    }
+}
+-------------------------------------------------
+
+Simplify path:
+public class Solution {
+    public String simplifyPath(String path) 
+    {
+        Deque<String> stack = new LinkedList<>();
+        Set<String> skip = new HashSet<>(Arrays.asList("..", ".", ""));
+
+        for(String dir : path.split("/"))
+        {
+            if(dir.equals("..") && !stack.isEmpty())
+            {
+                stack.pop();
+            }
+            else if(!skip.contains(dir))
+            {
+                stack.push(dir);
+            }
+        }
+
+        String res = "";
+
+        for(String dir : stack)
+            res = "/" + dir + res;
+
+        return res.isEmpty() ? "/" : res;
+    }
+}
+-------------------------------------------------
+
+Decode Ways:
+public class Solution {
+    public int numDecodings(String s) 
+    {
+        if(s.length() == 0) return 0;
+        int len = s.length();
+        int[] dp = new int[len+1];
+        dp[len] = 1;
+        dp[len-1] = s.charAt(len-1) == '0' ? 0 : 1;
+
+        for(int i = len-2; i >= 0; i--)
+        {
+            if(s.charAt(i) == '0')
+                continue;
+            else
+            {
+                int temp = Integer.parseInt(s.substring(i, i+2));
+                dp[i] = temp <= 26 ? dp[i+1] + dp[i+2] : dp[i+1];
+            }
+        }
+
+        return dp[0];
+    }
+}
+-------------------------------------------------
+
+Basic Calculator I:
+ex: "(1+(4+5+2)-3)+(6+8)" = 23
+
+public class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<Integer>();
+            int result = 0;
+            int number = 0;
+            int sign = 1;
+            for(int i = 0; i < s.length(); i++){
+                char c = s.charAt(i);
+                if(Character.isDigit(c)){
+                    number = 10 * number + (int)(c - '0');
+                }else if(c == '+'){
+                    result += sign * number;
+                    number = 0;
+                    sign = 1;
+                }else if(c == '-'){
+                    result += sign * number;
+                    number = 0;
+                    sign = -1;
+                }else if(c == '('){
+                    //we push the result first, then sign;
+                    stack.push(result);
+                    stack.push(sign);
+                    //reset the sign and result for the value in the parenthesis
+                    sign = 1;   
+                    result = 0;
+                }else if(c == ')'){
+                    result += sign * number;  
+                    number = 0;
+                    result *= stack.pop();    //stack.pop() is the sign before the parenthesis
+                    result += stack.pop();   //stack.pop() now is the result calculated before the parenthesis
+                }
+            }
+            if(number != 0) result += sign * number;
+            return result;
+    }
+}
+-------------------------------------------------
+
+public class Solution {
+    public int calculate(String s) {
+        if(s == null || s.length() == 0) return 0;
+        Stack<Integer> stack = new Stack<>();
+        int res = 0, num = 0;
+        char sign = '+';
+
+        for(int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+
+            if(Character.isDigit(cur)) {
+                num = num*10 + (int)(cur - '0');
+            }
+            
+            if(!Character.isDigit(cur) && cur != ' ' || i == s.length()-1) {
+                if (sign == '*') {
+                    stack.push(stack.pop() * num);
+                } else if (sign == '/') {
+                    stack.push(stack.pop() / num);
+                } else if (sign == '+') {
+                    stack.push(num);
+                } else if (sign == '-') {
+                    stack.push(-num);
+                }
+
+                sign = cur;
+                num = 0;
+            }
+        }
+        for(Integer entry : stack) res += entry;
+        return res;
+    }
+}
+-------------------------------------------------
+
