@@ -347,3 +347,176 @@ public class Solution {
     }
 }
 ---------------------------------------------------------
+
+Dec 19:
+Delete Node in a BST:
+public class Solution {
+    private TreeNode findMin(TreeNode root) {
+        while(root.left != null) {
+            root = root.left;
+        }
+        return root;
+    }
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null) return null;
+        if(root.val < key) root.right = deleteNode(root.right, key);
+        else if(root.val > key) root.left = deleteNode(root.left, key);
+        else {
+            if(root.left == null) return root.right;
+            else if(root.right == null) return root.left;
+            else {
+                TreeNode minVal = findMin(root.right);
+                root.val = minVal.val;
+                root.right = deleteNode(root.right, minVal.val);
+            }
+        }
+        return root;
+    }
+}
+---------------------------------------------------------
+
+Kth Smallest Element in a BST:
+// Use inorder traversal, find k th in the list
+public int kthSmallest(TreeNode root, int k) {
+    List<Integer> res = inorderTraversal(root);
+    return res.get(k-1);
+}
+---------------------------------------------------------
+
+Binary Tree Right Side View:
+// My iterative solution:
+public class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if(root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i = 0; i < size; i++) {
+                TreeNode curNode = queue.poll();
+                if(level == res.size()) res.add(curNode.val);
+                if(curNode.right != null) queue.add(curNode.right);
+                if(curNode.left != null) queue.add(curNode.left);
+            }
+            level++;
+        }
+        return res;
+    }
+}
+
+// Recursive solution:
+public class Solution {
+    public List<Integer> rightSideView(TreeNode root) 
+    {
+        List<Integer> res = new LinkedList<>();
+        reightSideView(root, res, 0);
+        return res;
+    }
+
+    public void rightSideView(TreeNode root, List<Integer> res, int curDepth)
+    {
+        if(root == null) return ;
+        if(curDepth = res.size()) res.add(root.val);
+
+        rightSideView(root.right, res, curDepth+1);
+        rightSideView(root.left, res, curDepth+1);
+    }
+}
+---------------------------------------------------------
+
+Validate Binary Search Tree:
+
+public class Solution {
+    public boolean isValidBST(TreeNode root) 
+    {
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    private boolean isValidBST(TreeNode root, long minVal, long maxVal)
+    {
+        if(root == null) return true;
+        if(root.val >= maxVal || root.val <= minVal) return false;
+        return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
+    }
+}
+---------------------------------------------------------
+
+Convert Sorted Array to Binary Search Tree:
+
+public class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) 
+    {
+        if(nums.length == 0) return null;
+        TreeNode root = buildBST(nums, 0, nums.length-1);
+        return root;
+    }
+    
+    private TreeNode buildBST(int[] nums, int low, int high)
+    {
+        if(low > high) return null;
+        int mid = low + (high-low)/2;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = buildBST(nums, low, mid-1);
+        node.right = buildBST(nums, mid+1, high);
+        return node;
+    }
+}
+---------------------------------------------------------
+
+Count Complete Tree Nodes:
+public class Solution {
+    
+    public int countNodes(TreeNode root)
+    {
+        int h = height(root);
+        
+        return h < 0 ? 0 : (height(root.right) == h-1 ? 
+                                (1 << h) + countNodes(root.right) : 
+                                (1 << h-1) + countNodes(root.left));
+    }
+
+    private int height(TreeNode root)
+    {
+        return root == null ? -1 : height(root.left) + 1;
+    }
+}
+---------------------------------------------------------
+
+Sum Root to Leaf Numbers:
+public class Solution {
+    public int sumNumbers(TreeNode root) {
+        if(root == null) return 0;
+        return sumNumbers(root, 0);
+    }
+    private int sumNumbers(TreeNode root, int num) {
+        if(root.left == null && root.right == null) 
+            return num*10 + root.val;
+        int sum = 0;
+        if(root.left != null) 
+            sum += sumNumbers(root.left, num*10 + root.val);
+        if(root.right != null) 
+            sum += sumNumbers(root.right, num*10 + root.val);
+        return sum;
+    }
+}
+---------------------------------------------------------
+
+Flatten Binary Tree to Linked List：
+public class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null) return ;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            if(cur.right != null) stack.push(cur.right);
+            if(cur.left != null) stack.push(cur.left);
+            if(!stack.isEmpty()) cur.right = stack.peek();
+            cur.left = null;
+        }
+    }
+}
+---------------------------------------------------------
+
