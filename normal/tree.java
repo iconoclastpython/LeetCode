@@ -520,3 +520,142 @@ public class Solution {
 }
 ---------------------------------------------------------
 
+Closest Binary Search Tree Value:
+public class Solution {
+    public int closestValue(TreeNode root, double target) {
+        int closest = root.val;
+        while(root != null) {
+            if(Math.abs(closest - target) > Math.abs(root.val - target)) {
+                closest = root.val;
+            }
+            root = root.val < target ? root.right : root.left;
+        }
+        return closest;
+    }
+    
+}
+---------------------------------------------------------
+
+Closest Binary Search Tree Value II:
+public class Solution {
+    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+        List<Integer> res = new ArrayList<>();
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        inorder(root, target, false, s1);
+        inorder(root, target, true, s2);
+        while(k-- > 0) {
+            if(s1.isEmpty())
+                res.add(s2.pop());
+            else if(s2.isEmpty())
+                res.add(s1.pop());
+            else if(Math.abs(s1.peek()-target) < Math.abs(s2.peek()-target))
+                res.add(s1.pop());
+            else if(Math.abs(s1.peek()-target) >= Math.abs(s2.peek()-target))
+                res.add(s2.pop());
+        }
+        return res;
+    }
+    
+    private void inorder(TreeNode root, double target, boolean reversed, Stack<Integer> stack) {
+        if(root == null) return;
+        inorder(reversed ? root.right : root.left, target, reversed, stack);
+        if((reversed && root.val <= target) || (!reversed && root.val > target)) return ;
+        stack.push(root.val);
+        inorder(reversed ? root.left : root.right, target, reversed, stack);
+    }
+}
+---------------------------------------------------------
+
+Sum of Left Leaves:
+public class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        if(root == null) return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int sum = 0;
+        while(!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            if(cur.right != null) queue.add(cur.right);
+            while(cur != null && cur.left != null) {
+                cur = cur.left;
+                if(cur.right != null) queue.add(cur.right);
+                if(cur.left == null && cur.right == null) {
+                    sum += cur.val;
+                }
+            }
+        }
+        return sum;
+    }
+}
+---------------------------------------------------------
+
+Closest Binary Search Tree Value II:
+public class Solution {
+    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+        List<Integer> res = new ArrayList<>();
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        inorder(root, target, false, s1);
+        inorder(root, target, true, s2);
+        while(k-- > 0) {
+            if(s1.isEmpty())
+                res.add(s2.pop());
+            else if(s2.isEmpty())
+                res.add(s1.pop());
+            else if(Math.abs(s1.peek()-target) < Math.abs(s2.peek()-target))
+                res.add(s1.pop());
+            else if(Math.abs(s1.peek()-target) >= Math.abs(s2.peek()-target))
+                res.add(s2.pop());
+        }
+        return res;
+    }
+    
+    private void inorder(TreeNode root, double target, boolean reversed, Stack<Integer> stack) {
+        if(root == null) return;
+        inorder(reversed ? root.right : root.left, target, reversed, stack);
+        if((reversed && root.val <= target) || (!reversed && root.val > target)) return ;
+        stack.push(root.val);
+        inorder(reversed ? root.left : root.right, target, reversed, stack);
+    }
+}
+
+---------------------------------------------------------
+
+Inorder Successor in BST:
+public class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode res = null;
+        while(root != null) {
+            if(p.val < root.val) {
+                res = root;
+                root = root.left;
+            }
+            else
+                root = root.right;
+        }
+        return res;
+    }
+}
+---------------------------------------------------------
+
+Binary Tree Longest Consecutive Sequence:
+public class Solution {
+    int maxVal = 0;
+    
+    public int longestConsecutive(TreeNode root) {
+        if(root == null) return 0;
+        helper(root, 0, root.val);
+        return maxVal;
+    }
+    
+    private void helper(TreeNode root, int curVal, int target) {
+        if(root == null) return;
+        if(root.val == target) curVal++;
+        else curVal = 1;
+        maxVal = Math.max(curVal, maxVal);
+        helper(root.left, curVal, root.val+1);
+        helper(root.right, curVal, root.val+1);
+    }
+}
+---------------------------------------------------------
