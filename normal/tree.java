@@ -659,3 +659,84 @@ public class Solution {
     }
 }
 ---------------------------------------------------------
+
+Find Leaves of Binary Tree:
+public class Solution {
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        height(root, res);
+        return res;
+    }
+    
+    private int height(TreeNode node, List<List<Integer>> res) {
+        if(node == null) return -1;
+        int level = 1 + Math.max(height(node.left, res), height(node.right, res));
+        if(res.size() < level+1) res.add(new ArrayList<>());
+        res.get(level).add(node.val);
+        return level;
+    }
+}
+---------------------------------------------------------
+
+Verify Preorder Sequence in Binary Search Tree:
+// Using stack to present a tree preorder trversal
+public class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        int low = Integer.MIN_VALUE;
+        Stack<Integer> stack = new Stack<>();
+        for(int p : preorder) {
+            if(p < low) return false;
+            while(!stack.isEmpty() && p > stack.peek()) {
+                low = stack.pop();
+            }
+            stack.push(p);
+        }
+        return true;
+    }
+}
+---------------------------------------------------------
+
+Largest BST Subtree:
+public class Solution {
+    int count = 0;
+    
+    public int largestBSTSubtree(TreeNode root) {
+        if(root == null) return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            if(cur.left != null) queue.add(cur.left);
+            if(cur.right != null) queue.add(cur.right);
+            if(isValidBST(cur, Long.MIN_VALUE, Long.MAX_VALUE)) {
+                count = Math.max(count, countNodes(cur));
+            }
+        }
+        return count;
+    }
+    
+    private boolean isValidBST(TreeNode root, long minVal, long maxVal) {
+        if(root == null) return true;
+        if(root.val >= maxVal || root.val <= minVal) return false;
+        return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
+    }
+    
+    private int countNodes(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int curSize = 1;
+        while(!queue.isEmpty()) {
+             TreeNode cur = queue.poll();
+             if(cur.left != null) {
+                 queue.add(cur.left);
+                 curSize++;
+             }
+             if(cur.right != null) {
+                 queue.add(cur.right);
+                 curSize++;
+             }
+        }
+        return curSize;
+    }
+}
+---------------------------------------------------------
