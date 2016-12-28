@@ -76,3 +76,51 @@ StringBuilder can delete element by:
 String cannot reverse in its index;
 String -> int: Integer.parseInt(String s);
 int -> String: String.valueOf(int num);
+------------------------------------------------------
+Basic things for tree:
+
+int height(TreeNode node) {
+    return node == null ? -1 : 1 + Math.max(height(node.left), height(node.right));
+}
+
+int countNodes(Treenode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int count = 1;
+        while(!queue.isEmpty()) {
+             TreeNode cur = queue.poll();
+             if(cur.left != null) {
+                 queue.add(cur.left);
+                 count++;
+             }
+             if(cur.right != null) {
+                 queue.add(cur.right);
+                 count++;
+             }
+        }
+        return count;
+}
+
+boolean isValidBST(TreeNode root) {
+    return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+}
+
+boolean isValidBST(TreeNode root, long minVal, long maxVal) {
+    if(root == null) return true;
+    if(root.val >= maxVal || root.val <= minVal) return false;
+    return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
+}
+
+void BFS(TreeNode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    while(!queue.isEmpty()) {
+        TreeNode curNode = queue.poll();
+        if(root.left != null) queue.add(root.left);
+        if(root.right != null) queue.add(root.right);
+    }
+}
+
+void DFS(TreeNode root) {
+    
+}
