@@ -76,29 +76,30 @@ StringBuilder can delete element by:
 String cannot reverse in its index;
 String -> int: Integer.parseInt(String s);
 int -> String: String.valueOf(int num);
+char -> int: Character.getNumericValue(char c);
 ------------------------------------------------------
-Basic things for tree:
+For Trees:
 
-int height(TreeNode node) {
-    return node == null ? -1 : 1 + Math.max(height(node.left), height(node.right));
+int height(TreeNode) {
+    return node == null ? -1 : Math.max(height(node.left), height(node.right));
 }
 
-int countNodes(Treenode root) {
+int countNodes(TreeNode root) {
     Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        int count = 1;
-        while(!queue.isEmpty()) {
-             TreeNode cur = queue.poll();
-             if(cur.left != null) {
-                 queue.add(cur.left);
-                 count++;
-             }
-             if(cur.right != null) {
-                 queue.add(cur.right);
-                 count++;
-             }
+    queue.add(root);
+    int conut = 1;
+    while(!queue.isEmpty()) {
+        TreeNode cur = queue.poll();
+        if(cur.left != null) {
+            queue.add(cur.left);
+            count++;
         }
-        return count;
+        if(cur.right != null) {
+            queue.add(cur.right);
+            count++;
+        }
+    }
+    return count;
 }
 
 boolean isValidBST(TreeNode root) {
@@ -115,12 +116,40 @@ void BFS(TreeNode root) {
     Queue<TreeNode> queue = new LinkedList<>();
     queue.add(root);
     while(!queue.isEmpty()) {
-        TreeNode curNode = queue.poll();
-        if(root.left != null) queue.add(root.left);
-        if(root.right != null) queue.add(root.right);
+        TreeNode cur = queue.poll();
+        // Do something here
+        if(cur.left != null) queue.add(cur.left);
+        if(cur.right != null) queue.add(cur.right);
+        // Do somethign here
     }
 }
 
+// Preorder Traversal:
 void DFS(TreeNode root) {
-    
+    List<Integer> res = new LinkedList<>();
+    Stack<TreeNode> stack = new Stack<>();
+    //stack.push(root);
+    TreeNode cur = root;
+    while(!stack.isEmpty()) {
+    //    TreeNode cur = stack.pop();
+        res.add(cur.val);
+        if(cur.right != null)
+            stack.push(cur.right);
+        cur = cur.left;
+        if(cur == null && !stack.isEmpty())
+            cur = stack.pop();
+    }
+    return res;
 }
+
+
+
+
+
+
+
+
+
+
+
+
