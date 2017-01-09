@@ -77,6 +77,8 @@ String cannot reverse in its index;
 String -> int: Integer.parseInt(String s);
 int -> String: String.valueOf(int num);
 char -> int: Character.getNumericValue(char c);
+
+Java "break" statement only jump out from the inter loop;
 ------------------------------------------------------
 For Trees:
 
@@ -143,8 +145,24 @@ void DFS(TreeNode root) {
 }
 
 
+------------------------------------------------------
+Substring Problem Model:
 
+type findSubstring(String str, String sub) {
+    int[] map = new int[128];
+    int count = sub.length(), int start = 0, end = 0;
+    for(char c : sub.toCharArray()) map[c]++;
+    while(end < str.length()) {
+        if(map[str.charAt(end++)]-- > 0 /* condition */) count--; /* Modify count */
+        while(count == 0/* count condition */) {
+            /* Do job here */
+            if(map[sub.charAt(start++)]++ >=0 /* condition */) count++; /* Modify count */
 
+        }
+        /* update count if reach maximum */
+    }
+    return anything
+}
 
 
 
