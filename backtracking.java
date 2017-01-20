@@ -49,3 +49,106 @@ public class Solution {
     }
 }
 -------------------------------------------------
+
+78. Subsets
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        backtrackingS(res, list, nums, 0);
+        return res;
+    }
+    
+    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start) {
+        res.add(new ArrayList<>(list));
+        for(int i = start; i < nums.length; i++) {
+            list.add(nums[i]);
+            backtrackingS(res, list, nums, i+1);
+            list.remove(list.size()-1);
+        }
+    }
+}
+-------------------------------------------------
+
+90. Subsets II
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrackingS(res, list, nums, 0);
+        return res;
+    }
+    
+    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start) {
+        res.add(new ArrayList<>(list));
+        for(int i = start; i < nums.length; i++) {
+            if(i > start && nums[i] == nums[i-1]) continue;
+            list.add(nums[i]);
+            backtrackingS(res, list, nums, i+1);
+            list.remove(list.size()-1);
+        }
+    }
+}
+-------------------------------------------------
+
+39. Combination Sum
+public class Solution {
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrackingS(res, list, nums, 0, target);
+        return res;
+    }
+    
+    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start, int target) {
+        int sum = 0;
+        for(int n : list) sum += n;
+        if(sum > target) return;
+        else if(sum == target) {
+            Collections.sort(list);
+            if(!res.contains(list))
+                res.add(new ArrayList<>(list));
+        }
+        else {
+            for(int i = start; i < nums.length; i++) {
+                list.add(nums[i]);
+                backtrackingS(res, list, nums, i, target);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+}
+-------------------------------------------------
+
+40. Combination Sum II
+public class Solution {
+    public List<List<Integer>> combinationSum2(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrackingS(res, list, nums, 0, target);
+        return res;
+    }
+    
+    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start, int target) {
+        int sum = 0;
+        for(int n : list) sum += n;
+        if(sum > target) return;
+        else if(sum == target) {
+            Collections.sort(list);
+            if(!res.contains(list))
+                res.add(new ArrayList<>(list));
+        }
+        else {
+            for(int i = start; i < nums.length; i++) {
+                list.add(nums[i]);
+                backtrackingS(res, list, nums, i+1, target);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+}
+-------------------------------------------------
+
