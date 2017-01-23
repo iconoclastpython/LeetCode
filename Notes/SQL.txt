@@ -1,0 +1,17 @@
+SQL:
+SELECT ... INTO new_table FROM table_name WHERE ...;
+UPDATE table_name SET ... WHERE ...;
+DELETE FROM table_name WHERE ...;
+
+SELECT ... FROM table_name1 INNER JOIN table_name2 ON ... WHERE ...
+
+SELECT ... FROM ... WHERE ...
+UNION (ALL)
+SELECT ... FROM ... WHERE ...
+
+SUM()
+DISTINCT()
+
+%   any number of character
+_ single   character
+[charlist]   one character in the list
