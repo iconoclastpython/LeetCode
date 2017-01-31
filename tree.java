@@ -37,6 +37,7 @@ Binary Tree Level Order Traversal:
  public static List<List<Integer>> levelOrderI(TreeNode root)
     {
         List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
 
@@ -47,10 +48,10 @@ Binary Tree Level Order Traversal:
 
             for(int i = 0; i < level; i++)
             {
-                TreeNode curNode = queue.peek();
+                TreeNode curNode = queue.poll();
                 if(curNode.left != null) queue.add(curNode.left);
                 if(curNode.right != null) queue.add(curNode.right);
-                curList.add(queue.poll().val);
+                curList.add(curNode.val);
             }
             res.add(curList);
             //res.add(0, curList); // for bottom up order traversal
