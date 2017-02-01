@@ -152,3 +152,39 @@ public class Solution {
 }
 -------------------------------------------------
 
+131. Palindrome Partitioning
+public class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> res = new ArrayList<>();
+        if(s == null || s.length() == 0) return res;
+        List<String> partition = new ArrayList<>();
+        helper(0, s, partition, res);
+        return res;
+    }
+    
+    private void helper(int pos, String s, List<String> partition, List<List<String>> res) {
+        if(pos == s.length()) {
+            res.add(new ArrayList<>(partition));
+            return ;
+        }
+        for(int i = pos+1; i <= s.length(); i++) {
+            String curStr = s.substring(pos, i);
+            if(!isPalindrome(curStr)) continue;
+            partition.add(curStr);
+            helper(i, s, partition, res);
+            partition.remove(partition.size()-1);
+        }
+    }
+    
+    private boolean isPalindrome(String str) {
+        int p = 0, q = str.length()-1;
+        if(p == q) return true;
+        while(p < q) {
+            if(str.charAt(p) != str.charAt(q)) return false;
+            p++;
+            q--;
+        }
+        return true;
+    }
+}
+-------------------------------------------------

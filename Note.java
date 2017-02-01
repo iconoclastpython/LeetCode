@@ -74,6 +74,10 @@ StringBuilder can delete element by:
 	delete(int start, int end);
 	deleteCharAt(int index);
 String cannot reverse in its index;
+String replace char in indes:
+    char[] chars = s.toCharArray();
+    chars[i] = 'x';
+    return new String(chars);
 String -> int: Integer.parseInt(String s);
 int -> String: String.valueOf(int num);
 char -> int: Character.getNumericValue(char c);
