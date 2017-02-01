@@ -64,6 +64,34 @@ Dec 16:
 
 Binary Tree Zigzag Level Order Traversal:
 
+// My Iteration Solution
+public class Solution {
+    public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 1;
+        while(!queue.isEmpty()) {
+            int sizeQ = queue.size();
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int i = 0; i < sizeQ; i++) {
+                TreeNode cur = queue.poll();
+                
+                if(level % 2 == 1) list.add(cur.val);
+                else list.add(0, cur.val);
+                    
+                if(cur.left != null) queue.add(cur.left);
+                if(cur.right != null) queue.add(cur.right);
+            }
+            res.add(list);
+            level++;
+        }
+        return res;
+    }
+}
+
+// Traverse
 public class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) 
     {
