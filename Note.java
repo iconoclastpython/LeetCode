@@ -69,6 +69,7 @@ http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
 ------------------------------------------------------
 char -> String: Character.toString(char c);
 char[] -> String: String.valueOf(char[] chars);
+char[] -> String: new String(chars);
 String can not delete element;
 StringBuilder can delete element by:
 	delete(int start, int end);

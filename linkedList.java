@@ -200,7 +200,7 @@ public class Solution {
             a = a.next;
             b = b.next;
             
-            if(a == b) return a;
+            if(a == b) return a; // a == null if no intersection
             else if(a == null) a = headB;
             else if(b == null) b = headA;
         }
@@ -212,18 +212,13 @@ public class Solution {
 
 Remove Linked List Elements:
 public class Solution {
-    public ListNode removeElements(ListNode head, int val) 
-    {        
+    public ListNode removeElements(ListNode head, int val) {
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
-        ListNode cur = head, prev = dummy;
-        while(cur != null)
-        {
-            if(cur.val == val)
-                prev.next = cur.next;
-            else
-                prev = prev.next;
-            
+        ListNode cur = dummy;
+        while(cur != null) {
+            while(cur.next != null && cur.next.val == val)
+                cur.next = cur.next.next;
             cur = cur.next;
         }
         return dummy.next;
