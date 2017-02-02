@@ -188,3 +188,33 @@ public class Solution {
     }
 }
 -------------------------------------------------
+
+17. Letter Combinations of a Phone Number
+public class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new LinkedList<>();
+        String[] mapping = new String[]{"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        StringBuilder sb = new StringBuilder();
+        helper(sb, digits, mapping, res);
+        
+        if(res.get(0).length() == 0)
+            res.remove(0);
+            
+        return res;
+    }
+    
+    private void helper(StringBuilder sb, String digits, String[] mapping, List<String> res) {
+        if(sb.length() == digits.length()) {
+            res.add(sb.toString());
+            return ;
+        }
+        
+        for(char c : mapping[digits.charAt(sb.length()) - '0'].toCharArray()) {
+            sb.append(c);
+            helper(sb, digits, mapping, res);
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+}
+-------------------------------------------------
+
