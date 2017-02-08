@@ -63,6 +63,27 @@ numbers.forEach((Integer val) -> System.out.print(val));
 //Comparator lambda
 Collections.sort(listObject, (Object a1, Object a2) -> a1.val.compareTo(a2.val));
 
+Iterator iter = collects.iterator();
+while(iter.hasNext()) {
+    object ob = iter.next();
+}
+
+Comparator<Object> someComparator() = new Comparator<Object>() {
+    int compare(Object o1, Object o2) {
+        return o1.compareTo(o2);
+    }
+}
+
+Collections.sort(object, new Comparator<Type>() {
+    @Override
+    public int compare(Type object1, Type object2) {
+        return Integer.compare(object1.val, object2.val);
+    }
+});
+
+List[] listArray = new ArrayList[];
+
+Random random
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
 http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
