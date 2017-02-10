@@ -63,27 +63,28 @@ numbers.forEach((Integer val) -> System.out.print(val));
 //Comparator lambda
 Collections.sort(listObject, (Object a1, Object a2) -> a1.val.compareTo(a2.val));
 
-Iterator iter = collects.iterator();
-while(iter.hasNext()) {
-    object ob = iter.next();
+// Sort HashMap by value(Yelp)
+List<Integer> searchTopTen(Map<Integer, Integer> data) {
+    List<Map.Entry<Integer, Integer>> dataSort = new ArrayList<>(data.entrySet());
+
+    Collections.sort(dataSort, new Comparator<Map.Entry<Integer, Integer>>(){
+        @Override
+        public int compare(Map.Entry<Integer, Integer> d1, Map.Entry<Integer, Integer> d2) {
+            return d2.getValue().compareTo(d1.getValue());
+        }
+    });
+
+    List<Integer> topStores = new ArrayList<>();
+    for(int i = 0; i < 10; i++) {
+        topStores.add(dataSort.get(i).getKey());
+    }
+    return topStores
 }
 
-Comparator<Object> someComparator() = new Comparator<Object>() {
-    int compare(Object o1, Object o2) {
-        return o1.compareTo(o2);
-    }
-}
+Iterator:
+Comparator:
+PriorityQueue:
 
-Collections.sort(object, new Comparator<Type>() {
-    @Override
-    public int compare(Type object1, Type object2) {
-        return Integer.compare(object1.val, object2.val);
-    }
-});
-
-List[] listArray = new ArrayList[];
-
-Random random
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
 http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
@@ -103,6 +104,8 @@ String replace char in indes:
 String -> int: Integer.parseInt(String s);
 int -> String: String.valueOf(int num);
 char -> int: Character.getNumericValue(char c);
+
+
 
 Java "break" statement only jump out from the inter loop;
 ------------------------------------------------------
