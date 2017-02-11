@@ -85,6 +85,8 @@ Iterator:
 Comparator:
 PriorityQueue:
 
+LinkedList dummy node: When first node need to change, use dummy.
+
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
 http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
