@@ -81,11 +81,33 @@ List<Integer> searchTopTen(Map<Integer, Integer> data) {
     return topStores
 }
 
-Iterator:
-Comparator:
-PriorityQueue:
+Iterator iter = collect.iterator();
+while(iter.hasNext()) {
+    int num = iter.next();
+}
 
 LinkedList dummy node: When first node need to change, use dummy.
+
+Partition Select:
+public int partition(int[] nums, int left, int right) {
+    //int pivot = nums[left];
+    Random rand = new Random();
+    int pivotIndex = rand.nextInt(right-left) + left;
+    int pivot = nums[pivotIndex];
+
+    int tmp = nums[pivotIndex];
+    nums[pivotIndex] = nums[left];
+    nums[left] = tmp;
+
+    while(left < right) {
+        while(left < right && nums[right] >= pivot) right--;
+        nums[left] = nums[right];
+        while(left < right && nums[left] <= pivot) left++;
+        nums[right] = nums[left]; 
+    }
+    nums[left] = pivot;
+    return left;
+}
 
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
