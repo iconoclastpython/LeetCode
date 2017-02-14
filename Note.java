@@ -88,7 +88,16 @@ while(iter.hasNext()) {
 
 LinkedList dummy node: When first node need to change, use dummy.
 
+Quick Sort:
+public void quickSort(int[] nums, int left, int right) {
+    if(left >= right) return;
+    int partitionIndex = partition(nums, left, right);
+    quickSort(nums, left, partitionIndex-1);
+    quickSort(nums, partitionIndex+1, right);
+}
+
 Partition Select:
+// return the index of the pivot element after partition
 public int partition(int[] nums, int left, int right) {
     //int pivot = nums[left];
     Random rand = new Random();
@@ -103,7 +112,7 @@ public int partition(int[] nums, int left, int right) {
         while(left < right && nums[right] >= pivot) right--;
         nums[left] = nums[right];
         while(left < right && nums[left] <= pivot) left++;
-        nums[right] = nums[left]; 
+        nums[right] = nums[left];
     }
     nums[left] = pivot;
     return left;
