@@ -331,6 +331,23 @@ public class Solution {
     }
 }
 
+public static List<Integer> preorder(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    Stack<TreeNode> stack = new Stack<>();
+    stack.push(root);
+    while(!stack.empty()) {
+        TreeNode node = stack.pop();
+        res.add(node.val);
+        if(node.right != null) {
+            stack.push(node.right);
+        }
+        if(node.left != null) {
+            stack.push(node.left);
+        }
+    }
+    return res;
+}
+
 // Traversal
 public class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {

@@ -118,6 +118,12 @@ public int partition(int[] nums, int left, int right) {
     return left;
 }
 
+Structure a singly Linked List from tail to head(LC445):
+// node is given, using while loop
+ListNode tmpHead = new ListNode(value);
+tmpHead.next = node;
+node = tmpHead;
+
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
 http://www.cs.utexas.edu/~moore/best-ideas/mjrty/
