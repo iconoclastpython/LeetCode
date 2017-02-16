@@ -61,7 +61,7 @@ List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 numbers.forEach((Integer val) -> System.out.print(val));
 
 //Comparator lambda
-Collections.sort(listObject, (Object a1, Object a2) -> a1.val - a2.val;
+Collections.sort(listObject, (Object a1, Object a2) -> (a1.val - a2.val);
 
 // Sort HashMap by value(Yelp)
 List<Integer> searchTopTen(Map<Integer, Integer> data) {
