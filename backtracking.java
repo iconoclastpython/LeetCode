@@ -98,13 +98,11 @@ public class Solution {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> list = new ArrayList<>();
         Arrays.sort(nums);
-        backtrackingS(res, list, nums, 0, target);
+        backtrackingS(res, list, nums, 0, target, 0);
         return res;
     }
     
-    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start, int target) {
-        int sum = 0;
-        for(int n : list) sum += n;
+    private void backtrackingS(List<List<Integer>> res, List<Integer> list, int[] nums, int start, int target, int sum) {
         if(sum > target) return;
         else if(sum == target) {
             Collections.sort(list);
@@ -113,9 +111,11 @@ public class Solution {
         }
         else {
             for(int i = start; i < nums.length; i++) {
+                sum += nums[i];
                 list.add(nums[i]);
-                backtrackingS(res, list, nums, i, target);
+                backtrackingS(res, list, nums, i, target, sum);
                 list.remove(list.size()-1);
+                sum -= nums[i];
             }
         }
     }

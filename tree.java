@@ -150,11 +150,10 @@ public void pathSum(TreeNode root, int sum, List<Integer> cur, List<List<Integer
         cur.removeLast();
         return ;
     }
-    else
-    {
-        pathSum(root.left, sum-root.val, cur, res);
-        pathSum(root.right, sum-root.val, cur, res);
-    }
+
+    pathSum(root.left, sum-root.val, cur, res);
+    pathSum(root.right, sum-root.val, cur, res);
+
     cur.removeLast();
 }
 ---------------------------------------------------------
