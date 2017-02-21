@@ -218,3 +218,54 @@ public class Solution {
 }
 -------------------------------------------------
 
+291. Word Pattern II
+public class Solution {
+    public boolean wordPatternMatch(String pattern, String str) {
+        Map<Character, String> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        return isMatch(map, set, 0, 0, pattern, str);
+    }
+    
+    private boolean isMatch(Map<Character, String> map, 
+                            Set<String> set, 
+                            int pIndex, int sIndex,
+                            String pattern, String str) {
+        // Base case
+        if(sIndex == str.length() && pIndex == pattern.length()) return true;
+        if(sIndex == str.length() || pIndex == pattern.length()) return false;
+        
+        // Get current pattern char
+        char p = pattern.charAt(pIndex);
+        
+        // Get the match if existed in map
+        if(map.containsKey(p)) {
+            String curMat = map.get(p);
+            
+            // Check if match on current index
+            if(!str.startsWith(curMat, sIndex)) {
+                return false;
+            }
+            
+            // Continue to recursive check next part
+            return isMatch(map, set, pIndex+1, sIndex+curMat.length(), pattern, str);
+        }
+        
+        // Case for current pattern's match not existed in map
+        for(int i = sIndex; i < str.length(); i++) {
+            String mat = str.substring(sIndex, i+1);
+            if(set.contains(mat)) continue;
+            
+            map.put(p, mat);
+            set.add(mat);
+            
+            if(isMatch(map, set, pIndex+1, i+1, pattern, str))
+                return true;
+                
+            map.remove(p);
+            set.remove(mat);
+        }
+        return false;
+    }
+}
+-------------------------------------------------
+
