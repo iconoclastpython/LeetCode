@@ -357,4 +357,121 @@ public class Solution {
 }
 ----------------------------------------------------
 
+138. Copy List with Random Pointer
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        RandomListNode dummy = new RandomListNode(0);
+        RandomListNode pointer = dummy, node = head;
+        RandomListNode newNode;
+        Map<RandomListNode, RandomListNode> map = new HashMap<>();
+        while(node != null) {
+            // map node
+            if(map.containsKey(node)) {
+                newNode = map.get(node);
+            }
+            else {
+                newNode = new RandomListNode(node.label);
+                map.put(node, newNode);
+            }
+            // pointer help to build dummy
+            pointer.next = newNode;
+            
+            // map node.random
+            if(node.random != null) {
+                if(map.containsKey(node.random)) {
+                    newNode.random = map.get(node.random);
+                }
+                else {
+                    newNode.random = new RandomListNode(node.random.label);
+                    map.put(node.random, newNode.random);
+                }
+            }
+            
+            pointer = pointer.next;
+            node = node.next;
+        }
+        
+        return dummy.next;
+    }
+}
+----------------------------------------------------
+
+25. Reverse Nodes in k-Group
+public class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || k < 0) return null;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode node = dummy;
+        while(node != null) {
+            node = reverseNextK(node, k);
+        }
+        return dummy.next;
+    }
+    
+    /**
+     * pre -> n1 -> ... -> nk -> post
+     * pre -> nk -> ... -> n1 -> post
+     **/
+    private ListNode reverseNextK(ListNode node, int k) {
+        ListNode nk = node;
+        ListNode n1 = node.next;
+        for(int i = 0; i < k; i++) {
+            nk = nk.next;
+            if(nk == null)
+                return null;
+        }
+        
+        ListNode post = nk.next;
+        ListNode newHead = null;
+        ListNode cur = n1;
+        while(cur != post) {
+            ListNode Next = cur.next;
+            cur.next = newHead;
+            newHead = cur;
+            cur = Next;
+        }
+        node.next = nk;
+        n1.next = post;
+        
+        return n1;
+    }
+}
+----------------------------------------------------
+
+109. Convert Sorted List to Binary Search Tree
+public class Solution {
+    private ListNode current;
+    public TreeNode sortedListToBST(ListNode head) {  
+        int size;
+        current = head;
+        size = getLength(head);
+        return helper(size);
+    }
+    
+    private int getLength(ListNode head) {
+        if(head == null) return 0;
+        int len = 0;
+        while(head != null) {
+            head = head.next;
+            len++;
+        }
+        return len;
+    }
+    
+    private TreeNode helper(int size) {
+        if(size <= 0) return null;
+        TreeNode left = helper(size/2);
+        TreeNode root = new TreeNode(current.val);
+        current = current.next;
+        TreeNode right = helper(size-1-size/2);
+        
+        root.left = left;
+        root.right = right;
+        
+        return root;
+    }
+}
+----------------------------------------------------
+
 

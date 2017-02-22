@@ -850,7 +850,7 @@ private TreeNode deleteRootNode(TreeNode root) {
     TreeNode next = root.right;
     TreeNode pre = null;
     for(; next.left != null; pre = next, next = next.left);
-        
+
     next.left = root.left;
     if(root.right != next) {
         pre.left = next.right;
@@ -883,3 +883,108 @@ public TreeNode deleteNode(TreeNode root, int key) {
     }
     return root;
 }
+---------------------------------------------------------
+
+297. Serialize and Deserialize Binary Tree
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null) return "";
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        
+        // Enqueue the tree nodes by level order
+        for(int i = 0; i < queue.size(); i++) {
+            TreeNode node = queue.get(i);
+            if(node == null) continue;
+            queue.add(node.left);
+            queue.add(node.right);
+        }
+        
+        // Delete null children for leaves
+        while(queue.get(queue.size()-1) == null)
+            queue.remove(queue.size()-1);
+            
+        // Build string
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i < queue.size(); i++) {
+            TreeNode node = queue.get(i);
+            if(node == null) sb.append(",X");
+            else sb.append("," + node.val);
+        }
+
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data.equals("") || data.length() == 0) return null;
+        String[] values = data.split(",");
+        TreeNode root = new TreeNode(Integer.parseInt(values[0]));
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        int index = 0;
+        boolean isLeftChild = true;
+        for(int i = 0; i < values.length; i++) {
+            if(!values[i].equals("X")) {
+                TreeNode node = new TreeNode(Integer.parseInt(values[i]));
+                if(isLeftChild)
+                    queue.get(index).left = node;
+                else
+                    queue.get(index).right = node;
+                queue.add(node);
+            }
+            if(!isLeftChild)
+                index++;
+            isLeftChild = !isLeftChild;
+        }
+        return root;
+    }
+}
+---------------------------------------------------------
+
+449. Serialize and Deserialize BST
+public class Codec {
+    private static String SEP = ",";
+    private static String NULL = "null";
+    
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null) return NULL;
+        StringBuilder sb = new StringBuilder();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.empty()) {
+            TreeNode node = stack.pop();
+            sb.append(node.val+"").append(SEP);
+            if(node.right != null) stack.push(node.right);
+            if(node.left != null) stack.push(node.left);
+        }
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data.equals(NULL)) return null;
+        String[] values = data.split(SEP);
+        Queue<Integer> queue = new LinkedList<>();
+        for(String v : values) {
+            queue.add(Integer.parseInt(v));
+        }
+        return getNodes(queue);
+    }
+    
+    private TreeNode getNodes(Queue<Integer> queue) {
+        if(queue.isEmpty()) return null;
+        TreeNode root = new TreeNode(queue.poll());
+        Queue<Integer> leftNodes = new LinkedList<>();
+        while(!queue.isEmpty() && queue.peek() < root.val) {
+            leftNodes.add(queue.poll());
+        }
+        root.left = getNodes(leftNodes);
+        root.right = getNodes(queue);
+        return root;
+    }
+}
+

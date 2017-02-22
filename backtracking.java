@@ -189,6 +189,49 @@ public class Solution {
 }
 -------------------------------------------------
 
+267. Palindrome Permutation II
+public class Solution {
+    public List<String> generatePalindromes(String s) {
+        List<String> res = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        boolean[] visited = new boolean[s.length()];
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        helper(set, chars, sb, visited);
+        res.addAll(set);
+        return res;
+    }
+    
+    private void helper(Set<String> set, char[] chars, StringBuilder sb, boolean[] visited) {
+        if(sb.length() == chars.length && !set.contains(sb.toString()) && isPalin(sb.toString())) {
+            set.add(sb.toString());
+            return;
+        }
+        for(int i = 0; i < chars.length; i++) {
+            if(visited[i] == true || (i > 0 && chars[i] == chars[i-1] && visited[i-1] == false)) continue;
+            visited[i] = true;
+            sb.append(chars[i]);
+            helper(set, chars, sb, visited);
+            sb.deleteCharAt(sb.length()-1);
+            visited[i] = false;
+        }
+    }
+    
+    private boolean isPalin(String s) {
+        int left = 0, right = s.length()-1;
+        while(left < right) {
+            if(s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+-------------------------------------------------
+
 17. Letter Combinations of a Phone Number
 public class Solution {
     public List<String> letterCombinations(String digits) {
@@ -269,89 +312,3 @@ public class Solution {
 }
 -------------------------------------------------
 
-212. Word Search II
-public class Solution {
-    
-    private class TrieNode {
-            String word;
-            boolean isWord;
-            TrieNode[] children = new TrieNode[26];
-            public TrieNode() {}
-    }
-        
-    private class TrieTree {
-        public TrieNode root;
-        
-        public TrieTree() {
-            root = new TrieNode();
-        }
-        
-        public void insert(String word) {
-            TrieNode pointer = root;
-            for(int i = 0; i < word.length(); i++) {
-                char c = word.charAt(i);
-                if(pointer.children[ c -'a'] == null)
-                    pointer.children[ c -'a'] = new TrieNode();
-                pointer = pointer.children[ c -'a'];
-            }
-            pointer.word = word;
-            pointer.isWord = true;
-        }
-    
-        public boolean findWord(String word) {
-            TrieNode pointer = root;
-            for(int i = 0; i < word.length(); i++) {
-                char c = word.charAt(i);
-                if(pointer.children[ c -'a'] != null)
-                    pointer = pointer.children[ c -'a'];
-                else
-                    return false;
-            }
-            return pointer.isWord;
-        }
-        
-    }
-    
-    public int[] dx = {1, -1, 0, 0};
-    public int[] dy = {0, 0, 1, -1};
-    
-    private void search(char[][] board, int x, int y, TrieNode root, List<String> res) {
-        char c = board[x][y];
-        if(c == '#' || root.children[ c -'a'] == null) return;
-        root = root.children[ c -'a'];
-        
-        if(root.isWord && !res.contains(root.word)) {
-            res.add(root.word);
-            root.word = null;
-            root.isWord = false;
-        }
-        
-        int row = board.length;
-        int col = board[0].length;
-        
-        board[x][y] = '#';
-        for(int i = 0; i < 4; i++){
-            int nextX = x+dx[i];
-            int nextY = y+dy[i];
-            if(nextX >= 0 && nextX < row && nextY >= 0 && nextY < col) {
-                search(board, nextX, nextY, root, res);
-            }
-        }
-        board[x][y] = c;
-        
-    }
-    
-    public List<String> findWords(char[][] board, String[] words) {
-        List<String> res = new ArrayList<>();
-        TrieTree trie = new TrieTree();
-        for(String word : words) {
-            trie.insert(word);
-        }
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[0].length; j++) {
-                search(board, i, j, trie.root, res);
-            }
-        }
-        return res;
-    }
-}
