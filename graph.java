@@ -130,6 +130,8 @@ public class Solution {
 -------------------------------------------------
 
 Graph Valid Tree:
+// 1. Nodes == Edges + 1;
+// 2. Connection;
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
         if(edges.length != n-1) return false;
@@ -151,3 +153,42 @@ public class Solution {
 }
 -------------------------------------------------
 
+133. Clone Graph
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if(node == null) return node;
+        List<UndirectedGraphNode> nodes = getNodes(node);
+        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+        for(UndirectedGraphNode n : nodes) {
+            map.put(n, new UndirectedGraphNode(n.label));
+        }
+        for(UndirectedGraphNode n : nodes) {
+            UndirectedGraphNode newNode = map.get(n);
+            for(UndirectedGraphNode neighbor : n.neighbors) {
+                UndirectedGraphNode newNeighbor = map.get(neighbor);
+                newNode.neighbors.add(newNeighbor);
+            }
+        }
+        return map.get(node);
+    }
+    
+    // Traverse the whlole graph to make list
+    private List<UndirectedGraphNode> getNodes(UndirectedGraphNode node) {
+        List<UndirectedGraphNode> nodes = new ArrayList<>();
+        Set<UndirectedGraphNode> set = new HashSet<>();
+        set.add(node);
+        Queue<UndirectedGraphNode> queue = new LinkedList<>();
+        queue.add(node);
+        while(!queue.isEmpty()) {
+            UndirectedGraphNode cur = queue.poll();
+            for(UndirectedGraphNode neighbor : cur.neighbors) {
+                if(!set.contains(neighbor))
+                    set.add(neighbor);
+                queue.add(neighbor);
+            }
+        }
+        nodes = new ArrayList<>(set);
+        return nodes;
+    }
+}
+-------------------------------------------------

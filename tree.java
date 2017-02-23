@@ -220,9 +220,11 @@ public class Solution {
         if(root == null || root == p || root == q) return root;
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if(left == null) return right;
+        if(left != null && right != null) return root;
+        else if(left == null) return right;
         else if(right == null) return left;
-        else return root;
+
+        return null;
     }
 }
 ---------------------------------------------------------
@@ -230,9 +232,9 @@ public class Solution {
 Maximum Depth of Binary Tree:
 
 public class Solution {
-    public int maxDepth(TreeNode root) 
-    {
-        return root == null ? 0 : 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    public int maxDepth(TreeNode root) {
+        if(root == null) return 0;
+        return Math.max(height(root.left), height(root.right)) + 1;
     }
 }
 ---------------------------------------------------------
@@ -240,8 +242,7 @@ public class Solution {
 Minimum Depth of Binary Tree:
 
 public class Solution {
-    public int minDepth(TreeNode root) 
-    {
+    public int minDepth(TreeNode root) {
         if(root == null) return 0;
         
         int left = minDepth(root.left);
@@ -443,30 +444,51 @@ public class Solution {
 }
 ---------------------------------------------------------
 
-Dec 19:
-Delete Node in a BST:
-public class Solution {
-    private TreeNode findMin(TreeNode root) {
-        while(root.left != null) {
-            root = root.left;
-        }
-        return root;
+450. Delete Node in a BST
+private TreeNode deleteRootNode(TreeNode root) {
+    if (root == null) {
+        return null;
     }
-    public TreeNode deleteNode(TreeNode root, int key) {
-        if(root == null) return null;
-        if(root.val < key) root.right = deleteNode(root.right, key);
-        else if(root.val > key) root.left = deleteNode(root.left, key);
-        else {
-            if(root.left == null) return root.right;
-            else if(root.right == null) return root.left;
-            else {
-                TreeNode minVal = findMin(root.right);
-                root.val = minVal.val;
-                root.right = deleteNode(root.right, minVal.val);
-            }
-        }
-        return root;
+    if (root.left == null) {
+        return root.right;
     }
+    if (root.right == null) {
+        return root.left;
+    }
+    TreeNode next = root.right;
+    TreeNode pre = null;
+    for(; next.left != null; pre = next, next = next.left);
+    next.left = root.left;
+    if(root.right != next) {
+        pre.left = next.right;
+        next.right = root.right;
+    }
+    return next;
+}
+    
+public TreeNode deleteNode(TreeNode root, int key) {
+    TreeNode cur = root;
+    TreeNode pre = null;
+    while(cur != null && cur.val != key) {
+        pre = cur;
+        if (key < cur.val) {
+            cur = cur.left;
+        } 
+        else if (key > cur.val) {
+            cur = cur.right;
+        }
+    }
+    if (pre == null) {
+        return deleteRootNode(cur);
+    }
+
+    if (pre.left == cur) {
+        pre.left = deleteRootNode(cur);
+    } 
+    else if(pre.right == cur) {
+        pre.right = deleteRootNode(cur);
+    }
+    return root;
 }
 ---------------------------------------------------------
 
@@ -503,15 +525,13 @@ public class Solution {
 
 // Recursive solution:
 public class Solution {
-    public List<Integer> rightSideView(TreeNode root) 
-    {
+    public List<Integer> rightSideView(TreeNode root) {
         List<Integer> res = new LinkedList<>();
         reightSideView(root, res, 0);
         return res;
     }
 
-    public void rightSideView(TreeNode root, List<Integer> res, int curDepth)
-    {
+    public void rightSideView(TreeNode root, List<Integer> res, int curDepth){
         if(root == null) return ;
         if(curDepth = res.size()) res.add(root.val);
 
@@ -524,13 +544,11 @@ public class Solution {
 Validate Binary Search Tree:
 
 public class Solution {
-    public boolean isValidBST(TreeNode root) 
-    {
+    public boolean isValidBST(TreeNode root) {
         return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
     
-    private boolean isValidBST(TreeNode root, long minVal, long maxVal)
-    {
+    private boolean isValidBST(TreeNode root, long minVal, long maxVal){
         if(root == null) return true;
         if(root.val >= maxVal || root.val <= minVal) return false;
         return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
@@ -539,17 +557,14 @@ public class Solution {
 ---------------------------------------------------------
 
 Convert Sorted Array to Binary Search Tree:
-
 public class Solution {
-    public TreeNode sortedArrayToBST(int[] nums) 
-    {
+    public TreeNode sortedArrayToBST(int[] nums) {
         if(nums.length == 0) return null;
         TreeNode root = buildBST(nums, 0, nums.length-1);
         return root;
     }
     
-    private TreeNode buildBST(int[] nums, int low, int high)
-    {
+    private TreeNode buildBST(int[] nums, int low, int high){
         if(low > high) return null;
         int mid = low + (high-low)/2;
         TreeNode node = new TreeNode(nums[mid]);
@@ -562,18 +577,14 @@ public class Solution {
 
 Count Complete Tree Nodes:
 public class Solution {
-    
-    public int countNodes(TreeNode root)
-    {
+    public int countNodes(TreeNode root){
         int h = height(root);
-        
         return h < 0 ? 0 : (height(root.right) == h-1 ? 
                                 (1 << h) + countNodes(root.right) : 
                                 (1 << h-1) + countNodes(root.left));
     }
 
-    private int height(TreeNode root)
-    {
+    private int height(TreeNode root){
         return root == null ? -1 : height(root.left) + 1;
     }
 }
@@ -685,38 +696,6 @@ public class Solution {
 }
 ---------------------------------------------------------
 
-Closest Binary Search Tree Value II:
-public class Solution {
-    public List<Integer> closestKValues(TreeNode root, double target, int k) {
-        List<Integer> res = new ArrayList<>();
-        Stack<Integer> s1 = new Stack<>();
-        Stack<Integer> s2 = new Stack<>();
-        inorder(root, target, false, s1);
-        inorder(root, target, true, s2);
-        while(k-- > 0) {
-            if(s1.isEmpty())
-                res.add(s2.pop());
-            else if(s2.isEmpty())
-                res.add(s1.pop());
-            else if(Math.abs(s1.peek()-target) < Math.abs(s2.peek()-target))
-                res.add(s1.pop());
-            else if(Math.abs(s1.peek()-target) >= Math.abs(s2.peek()-target))
-                res.add(s2.pop());
-        }
-        return res;
-    }
-    
-    private void inorder(TreeNode root, double target, boolean reversed, Stack<Integer> stack) {
-        if(root == null) return;
-        inorder(reversed ? root.right : root.left, target, reversed, stack);
-        if((reversed && root.val <= target) || (!reversed && root.val > target)) return ;
-        stack.push(root.val);
-        inorder(reversed ? root.left : root.right, target, reversed, stack);
-    }
-}
-
----------------------------------------------------------
-
 Inorder Successor in BST:
 public class Solution {
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
@@ -747,7 +726,8 @@ public class Solution {
     private void helper(TreeNode root, int curVal, int target) {
         if(root == null) return;
         if(root.val == target) curVal++;
-        else curVal = 1;
+        else curVal = 1;    // important
+
         maxVal = Math.max(curVal, maxVal);
         helper(root.left, curVal, root.val+1);
         helper(root.right, curVal, root.val+1);
@@ -774,7 +754,7 @@ public class Solution {
 ---------------------------------------------------------
 
 Verify Preorder Sequence in Binary Search Tree:
-// Using stack to present a tree preorder trversal
+// Using stack to present a tree preorder traversal
 public class Solution {
     public boolean verifyPreorder(int[] preorder) {
         int low = Integer.MIN_VALUE;
@@ -836,55 +816,6 @@ public class Solution {
 }
 ---------------------------------------------------------
 
-450. Delete Node in a BST
-private TreeNode deleteRootNode(TreeNode root) {
-    if (root == null) {
-        return null;
-    }
-    if (root.left == null) {
-        return root.right;
-    }
-    if (root.right == null) {
-        return root.left;
-    }
-    TreeNode next = root.right;
-    TreeNode pre = null;
-    for(; next.left != null; pre = next, next = next.left);
-
-    next.left = root.left;
-    if(root.right != next) {
-        pre.left = next.right;
-        next.right = root.right;
-    }
-    return next;
-}
-    
-public TreeNode deleteNode(TreeNode root, int key) {
-    TreeNode cur = root;
-    TreeNode pre = null;
-    while(cur != null && cur.val != key) {
-        pre = cur;
-        if (key < cur.val) {
-            cur = cur.left;
-        } 
-        else if (key > cur.val) {
-            cur = cur.right;
-        }
-    }
-    if (pre == null) {
-        return deleteRootNode(cur);
-    }
-
-    if (pre.left == cur) {
-        pre.left = deleteRootNode(cur);
-    } 
-    else if(pre.right == cur) {
-        pre.right = deleteRootNode(cur);
-    }
-    return root;
-}
----------------------------------------------------------
-
 297. Serialize and Deserialize Binary Tree
 public class Codec {
 
@@ -935,6 +866,7 @@ public class Codec {
                     queue.get(index).right = node;
                 queue.add(node);
             }
+            // Jump to the next node deal with it's children
             if(!isLeftChild)
                 index++;
             isLeftChild = !isLeftChild;
@@ -950,6 +882,7 @@ public class Codec {
     private static String NULL = "null";
     
     // Encodes a tree to a single string.
+    // Preorder traversal.
     public String serialize(TreeNode root) {
         if(root == null) return NULL;
         StringBuilder sb = new StringBuilder();

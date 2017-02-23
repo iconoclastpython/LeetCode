@@ -54,10 +54,6 @@ public class Solution {
 
 Find Peak Element
 class Solution {
-    /**
-     * @param A: An integers array.
-     * @return: return any of peek positions.
-     */
     public int findPeak(int[] A) {
         if(A == null || A.length == 0) return -1;
         

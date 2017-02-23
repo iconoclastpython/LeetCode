@@ -48,6 +48,7 @@ External Iteration:
 2. cannot efficiently use multicore cpu;
 3. not good for compiler optimization;
 
+
 List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 for(Integer num : numbers) System.out.print(num);
 
@@ -57,11 +58,14 @@ Internal Interation:
 2. concurrent execution;
 3. good for JIT compiler optimization;
 
+
 List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
 numbers.forEach((Integer val) -> System.out.print(val));
 
+
 //Comparator lambda
 Collections.sort(listObject, (Object a1, Object a2) -> (a1.val - a2.val);
+
 
 // Sort HashMap by value(Yelp)
 List<Integer> searchTopTen(Map<Integer, Integer> data) {
@@ -81,12 +85,12 @@ List<Integer> searchTopTen(Map<Integer, Integer> data) {
     return topStores
 }
 
+
 Iterator iter = collect.iterator();
 while(iter.hasNext()) {
     int num = iter.next();
 }
 
-LinkedList dummy node: When first node need to change, use dummy.
 
 Quick Sort:
 public void quickSort(int[] nums, int left, int right) {
@@ -118,11 +122,20 @@ public int partition(int[] nums, int left, int right) {
     return left;
 }
 
+
+Bucket Sort:
+1. Map all the elements(key) with their frequency(value);
+2. Use map value(frequency) as index, map key(elements) as content, build bucket;
+3. The largest existed index contains most frequent element;
+
+
 Structure a singly Linked List from tail to head(LC445):
 // node is given, using while loop
 ListNode tmpHead = new ListNode(value);
 tmpHead.next = node;
 node = tmpHead;
+
+LinkedList dummy node: When first node need to change, use dummy.
 
 ------------------------------------------------------
 Boyer-Moore Majority Vote Algorithm:
@@ -135,8 +148,12 @@ String can not delete element;
 StringBuilder can delete element by:
 	delete(int start, int end);
 	deleteCharAt(int index);
+StringBuilder properties:
+    insert(int index, String s);
+String properties:
+    startsWith(String prefix, int index);
 String cannot reverse in its index;
-String replace char in indes:
+String replace char at index:
     char[] chars = s.toCharArray();
     chars[i] = 'x';
     return new String(chars);
@@ -232,7 +249,17 @@ type findSubstring(String str, String sub) {
     }
     return anything
 }
+------------------------------------------------------
 
+OOD:
+1. Use Case;
+2. Entities;
+3. Interface;
+4. Class for Objects;
+5. Inheritance for multi-class;
+6. Abstract;
+7. Map relationship between entities;
+8. is-a and has-a relationship;
 
 
 

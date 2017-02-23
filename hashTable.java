@@ -245,6 +245,74 @@ public class Solution {
 }
 -------------------------------------------------
 
+451. Sort Characters By Frequency
+// Bucket sort
+public class Solution {
+    public String frequencySort(String s) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = s.toCharArray();
+        int[] map = new int[128];
+        for(char c : chars) {
+            int cur = (int)c;
+            map[cur]++;
+        }
+
+        List<Integer>[] bucket = new List[s.length()+1];
+        for(int i = 0; i < 128; i++) {
+            if(map[i] != 0) {
+                if(bucket[map[i]] == null)
+                    bucket[map[i]] = new ArrayList<>();
+                bucket[map[i]].add(i);
+            }
+        }
+        for(int i = s.length(); i >= 0; i--) {
+            if(bucket[i] != null) {
+                for(int ele : bucket[i]) {
+                    int fre = i;
+                    for(int f = fre; f > 0; f--) {
+                        sb.append(Character.toString((char) ele));
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+-------------------------------------------------
+
+347. Top K Frequent Elements
+// Bucket sort
+public class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer> res = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer>[] bucket = new List[nums.length+1];
+        
+        for(int n : nums) {
+            if(!map.containsKey(n))
+                map.put(n, 1);
+            else
+                map.put(n, map.get(n)+1);
+        }
+
+        for(int key : map.keySet()) {
+            int fre = map.get(key);
+            if(bucket[fre] == null) 
+                bucket[fre] = new ArrayList<>();
+            bucket[fre].add(key);
+        }
+        
+        for(int i = nums.length; i >= 0 && res.size() < k; i--) {
+            if(bucket[i] != null) {
+                res.addAll(bucket[i]);
+            }
+        }
+        
+        return res;
+    }
+}
+-------------------------------------------------
+
 460. LFU Cache
 public class LFUCache {
     private Node head = null;
@@ -270,10 +338,12 @@ public class LFUCache {
         if ( cap == 0 ) return;
         if (valueHash.containsKey(key)) {
             valueHash.put(key, value);
-        } else {
+        } 
+        else {
             if (valueHash.size() < cap) {
                 valueHash.put(key, value);
-            } else {
+            } 
+            else {
                 removeOld();
                 valueHash.put(key, value);
             }
@@ -286,13 +356,15 @@ public class LFUCache {
         if (head == null) {
             head = new Node(0);
             head.keys.add(key);
-        } else if (head.count > 0) {
+        } 
+        else if (head.count > 0) {
             Node node = new Node(0);
             node.keys.add(key);
             node.next = head;
             head.prev = node;
             head = node;
-        } else {
+        } 
+        else {
             head.keys.add(key);
         }
         nodeHash.put(key, head);      
@@ -306,9 +378,11 @@ public class LFUCache {
             node.next = new Node(node.count+1);
             node.next.prev = node;
             node.next.keys.add(key);
-        } else if (node.next.count == node.count+1) {
+        } 
+        else if (node.next.count == node.count+1) {
             node.next.keys.add(key);
-        } else {
+        } 
+        else {
             Node tmp = new Node(node.count+1);
             tmp.keys.add(key);
             tmp.prev = node;

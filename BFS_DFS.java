@@ -263,3 +263,84 @@ public class Solution {
         return curMax;
     }
 }
+------------------------------------
+
+207. Course Schedule
+public class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] degrees = new int[numCourses];
+        List[] edges = new ArrayList[numCourses];
+        
+        for(int i = 0; i < numCourses; i++)
+            edges[i] = new ArrayList<Integer>();
+        
+        // degree: The course index with no preCourse contains element 0
+        for(int i = 0; i < prerequisites.length; i++) {
+            degrees[prerequisites[i][0]]++;
+            edges[prerequisites[i][1]].add(prerequisites[i][0]);
+        }
+        
+        // Maintains the courses which has no preCourse already
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < degrees.length; i++) {
+            if(degrees[i] == 0) 
+                queue.add(i);
+        }
+        int count = 0;
+        while(!queue.isEmpty()) {
+            count++;
+            int course = (int)queue.poll();
+            List<Integer> preCourses = edges[course];
+            for(int i = 0; i < preCourses.size(); i++) {
+                degrees[preCourses.get(i)]--;
+                if(degrees[preCourses.get(i)] == 0) {
+                    queue.add(preCourses.get(i));
+                }
+            }
+        }
+        return count == numCourses;
+    }
+}
+------------------------------------
+
+210. Course Schedule II
+public class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] degrees = new int[numCourses];
+        List[] edges = new ArrayList[numCourses];
+        
+        for(int i = 0; i < numCourses; i++)
+            edges[i] = new ArrayList<Integer>();
+            
+        for(int i = 0; i < prerequisites.length; i++) {
+            degrees[prerequisites[i][0]]++;
+            edges[prerequisites[i][1]].add(prerequisites[i][0]);
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < degrees.length; i++) {
+            if(degrees[i] == 0)
+                queue.add(i);
+        }
+        int count = 0;
+        int[] res = new int[numCourses];
+        while(!queue.isEmpty()) {
+            int course = (int)queue.poll();
+            res[count++] = course;
+            List<Integer> targetCourses = edges[course];
+            for(int i = 0; i < targetCourses.size(); i++) {
+                int pointer = (int)targetCourses.get(i);
+                degrees[pointer]--;
+                if(degrees[pointer] == 0) {
+                    queue.add(pointer);
+                }
+            }
+        }
+        if(count == numCourses)
+            return res;
+            
+        return new int[0];
+    }
+}
+------------------------------------
+

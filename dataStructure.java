@@ -136,3 +136,92 @@ public class Solution {
 }
 ------------------------------------------------
 
+146. LRU Cache
+public class LRUCache {
+    
+    class DoublyLinkedList {
+        int key;
+        int value;
+        DoublyLinkedList pre;
+        DoublyLinkedList post;
+    }
+    
+    private DoublyLinkedList head;
+    private DoublyLinkedList tail;
+    
+    // Add node on the head
+    private void addNode(DoublyLinkedList node) {
+        node.pre = head;
+        node.post = head.post;
+        head.post.pre = node;
+        head.post = node;
+    }
+    
+    // Remove given node from the linked list
+    private void removeNode(DoublyLinkedList node) {
+        DoublyLinkedList nodePre = node.pre;
+        DoublyLinkedList nodePost = node.post;
+        nodePre.post = nodePost;
+        nodePost.pre = nodePre;
+    }
+    
+    // Move given node to head
+    private void moveToHead(DoublyLinkedList node) {
+        removeNode(node);
+        addNode(node);
+    }
+    
+    // Pop the node on tail
+    private DoublyLinkedList popTail() {
+        DoublyLinkedList tailNode = tail.pre;
+        removeNode(tailNode);
+        return tailNode;
+    }
+
+    private int numNodes;
+    private int capacity;
+    private Map<Integer, DoublyLinkedList> cache = new HashMap<>();
+    
+    public LRUCache(int capacity) {
+        this.numNodes = 0;
+        this.capacity = capacity;
+        
+        this.head = new DoublyLinkedList();
+        this.head.pre = null;
+        
+        this.tail = new DoublyLinkedList();
+        this.tail.post = null;
+        
+        this.head.post = tail;
+        this.tail.pre = head;
+    }
+    
+    public int get(int key) {
+        DoublyLinkedList node = cache.get(key);
+        if(node == null) return -1;
+        moveToHead(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        DoublyLinkedList node = cache.get(key);
+        
+        if(node == null) {
+            DoublyLinkedList newNode = new DoublyLinkedList();
+            newNode.key = key;
+            newNode.value = value;
+            cache.put(key, newNode);
+            addNode(newNode);
+            numNodes++;
+            if(numNodes > capacity) {
+                numNodes--;
+                DoublyLinkedList extraNode = popTail();
+                cache.remove(extraNode.key);
+            }
+        }
+        else {
+            node.value = value;
+            moveToHead(node);
+        }
+    }
+}
