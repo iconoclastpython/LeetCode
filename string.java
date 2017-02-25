@@ -625,6 +625,7 @@ public class Solution {
 }
 -------------------------------------------------
 
+227. Basic Calculator II
 public class Solution {
     public int calculate(String s) {
         if(s == null || s.length() == 0) return 0;
@@ -638,15 +639,18 @@ public class Solution {
             if(Character.isDigit(cur)) {
                 num = num*10 + (int)(cur - '0');
             }
-            
+
             if(!Character.isDigit(cur) && cur != ' ' || i == s.length()-1) {
                 if (sign == '*') {
                     stack.push(stack.pop() * num);
-                } else if (sign == '/') {
+                } 
+                else if (sign == '/') {
                     stack.push(stack.pop() / num);
-                } else if (sign == '+') {
+                } 
+                else if (sign == '+') {
                     stack.push(num);
-                } else if (sign == '-') {
+                } 
+                else if (sign == '-') {
                     stack.push(-num);
                 }
 
@@ -654,7 +658,7 @@ public class Solution {
                 num = 0;
             }
         }
-        for(Integer entry : stack) res += entry;
+        for(Integer num : stack) res += num;
         return res;
     }
 }

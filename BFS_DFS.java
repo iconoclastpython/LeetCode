@@ -69,18 +69,21 @@ public List<List<String>> findLadders(String start, String end, List<String> wor
 }
 
 // BFS: Trace every node's distance from the start node (level by level).
-private void bfs(String start, String end, Set<String> dict, HashMap<String, ArrayList<String>> nodeNeighbors, HashMap<String, Integer> distance) {
-  for (String str : dict)
-      nodeNeighbors.put(str, new ArrayList<String>());
+private void bfs(String start, String end, Set<String> dict, 
+                 HashMap<String, ArrayList<String>> nodeNeighbors,
+                 HashMap<String, Integer> distance) {
+  for (String word : dict)
+      nodeNeighbors.put(word, new ArrayList<String>());
 
   Queue<String> queue = new LinkedList<String>();
   queue.offer(start);
   distance.put(start, 0);
 
   while (!queue.isEmpty()) {
-      int count = queue.size();
+      int size = queue.size();
       boolean foundEnd = false;
-      for (int i = 0; i < count; i++) {
+      
+      for (int i = 0; i < size; i++) {
           String cur = queue.poll();
           int curDistance = distance.get(cur);                
           ArrayList<String> neighbors = getNeighbors(cur, dict);
@@ -123,11 +126,16 @@ private ArrayList<String> getNeighbors(String node, Set<String> dict) {
 }
 
 // DFS: output all paths with the shortest distance.
-private void dfs(String cur, String end, Set<String> dict, HashMap<String, ArrayList<String>> nodeNeighbors, HashMap<String, Integer> distance, ArrayList<String> solution, List<List<String>> res) {
+private void dfs(String cur, String end, Set<String> dict, 
+                 HashMap<String, ArrayList<String>> nodeNeighbors, 
+                 HashMap<String, Integer> distance, 
+                 ArrayList<String> solution, 
+                 List<List<String>> res) {
     solution.add(cur);
-    if (end.equals(cur)) {
+    if(end.equals(cur)) {
        res.add(new ArrayList<String>(solution));
-    } else {
+    } 
+    else {
        for (String next : nodeNeighbors.get(cur)) {            
             if (distance.get(next) == distance.get(cur) + 1) {
                  dfs(next, end, dict, nodeNeighbors, distance, solution, res);

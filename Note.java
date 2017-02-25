@@ -9,29 +9,23 @@ public class Solution {
         TreeNode pre, = null;
         TreeNode cur = root;
 
-        while(cur != null)
-        {
-            if(cur.left == null)
-            {
+        while(cur != null){
+            if(cur.left == null){
                 //print cur.val here
                 cur = cur.right;
             }
-            else
-            {
+            else{
                 pre = cur.left;
 
-                while(pre.right != null && pre.right != cur)
-                {
+                while(pre.right != null && pre.right != cur){
                     pre = pre.right;
                 }
 
-                if(pre.right == null)
-                {
+                if(pre.right == null){
                     pre.right = cur;
                     cur = cur.left;
                 }
-                else    //pre point to cur
-                {
+                else    //pre point to cur{
                     pre.right = null;
                     //print cur.val here
                     cur = cur.right;
@@ -64,7 +58,7 @@ numbers.forEach((Integer val) -> System.out.print(val));
 
 
 //Comparator lambda
-Collections.sort(listObject, (Object a1, Object a2) -> (a1.val - a2.val);
+Collections.sort(listObject, (Object a1, Object a2) -> (a1.val - a2.val));
 
 
 // Sort HashMap by value(Yelp)
@@ -101,6 +95,7 @@ public void quickSort(int[] nums, int left, int right) {
 }
 
 Partition Select:
+// Average O(n) by random select
 // return the index of the pivot element after partition
 public int partition(int[] nums, int left, int right) {
     //int pivot = nums[left];

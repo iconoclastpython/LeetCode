@@ -29,20 +29,16 @@ public class Solution {
                 return mid;
             }
             else if(nums[left] < nums[mid]) {
-                if(nums[left] <= target && target <= nums[mid]) {
+                if(nums[left] <= target && target <= nums[mid])
                     right = mid;
-                }
-                else {
+                else 
                     left = mid;
-                }
             }
-            else {
-                if(nums[mid] <= target && target <= nums[right]) {
+            else {  // >=
+                if(nums[mid] <= target && target <= nums[right])
                     left = mid;
-                }
-                else {
+                else
                     right = mid;
-                }
             }
         }
         if(nums[left] == target) return left;
@@ -148,7 +144,7 @@ public class Solution {
             int mid = start + (end-start)/2;
             if(reader.get(mid) == target) 
                 end = mid;
-            else if(reader.get(mid) < target) 
+            else if(reader.get(mid) < target)
                 start = mid;
             else
                 end = mid;
@@ -209,7 +205,7 @@ public class Solution {
 }
 ------------------------------------
 
-240. Search a 2D Matrix II
+240. Search a 2D Matrix II // Find occurance
 public class Solution {
     public int searchMatrix(int[][] matrix, int target) {
         if(matrix == null || matrix.length == 0) return 0;

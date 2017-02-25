@@ -140,6 +140,9 @@ public class Solution {
         for(int[] edge : edges) {
             int root1 = find(roots, edge[0]);
             int root2 = find(roots, edge[1]);
+
+            // if two vertices happen to be in the same set
+            // then there's a cycle
             if(root1 == root2) return false;
             roots[root1] = root2;
         }

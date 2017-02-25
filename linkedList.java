@@ -339,12 +339,11 @@ public class Solution {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
         
-        for(ListNode cur = dummy; cur.next != null && 
-        	cur.next.next != null; cur = cur.next.next)
-        {
+        for(ListNode cur = dummy; 
+            cur.next != null && cur.next.next != null; 
+            cur = cur.next.next){
             cur.next = swap(cur.next, cur.next.next);
         }
-        
         return dummy.next;
     }
     
